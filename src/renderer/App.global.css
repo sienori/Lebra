@@ -4,36 +4,20 @@
  */
 body {
   position: relative;
-  color: white;
+  margin: 0;
+  /*color: white;*/
   height: 100vh;
-  background: linear-gradient(
+  /*background: linear-gradient(
     200.96deg,
     #fedc2a -29.09%,
     #dd5789 51.77%,
     #7a2c9e 129.35%
-  );
+  );*/
   font-family: sans-serif;
   overflow-y: hidden;
-  display: flex;
+  /*display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-button {
-  background-color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  appearance: none;
-  font-size: 1.3rem;
-  box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
-    0px 18px 88px -4px rgba(24, 39, 75, 0.14);
-  transition: transform ease-in 0.1s;
-  cursor: pointer;
-}
-
-button:hover {
-  transform: scale(1.05);
+  align-items: center;*/
 }
 
 li {
@@ -57,4 +41,61 @@ a:hover {
   justify-content: center;
   align-items: center;
   margin: 20px 0;
+}
+
+.main {
+  display: flex;
+  height: 100vh;
+}
+
+.Sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background-color: #777;
+  color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.Sidebar button {
+  background-color: transparent;
+  color: white;
+  font-size: 18px;
+  margin: 10px 0px;
+  border: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.Sidebar button:hover {
+  text-decoration: dashed;
+}
+
+.books {
+  color: black;
+  width: 100%;
+  overflow-y: scroll;
+  background-color: #eee;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.book {
+  width: 130px;
+  height: 200px;
+  margin: 15px;
+  display: flex;
+}
+
+.book img {
+  object-fit: contain;
+  width: 100%;
+}
+
+.book p {
+  display: none;
 }

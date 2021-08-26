@@ -14,8 +14,12 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Store from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { startSync, BookStore } from './sync/syncManager';
+
+const store = new Store();
 
 export default class AppUpdater {
   constructor() {
@@ -25,12 +29,36 @@ export default class AppUpdater {
   }
 }
 
-let mainWindow: BrowserWindow | null = null;
+let mainWindow: BrowserWindow | undefined;
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+ipcMain.on('sync', async (event, storeName) => {
+  // startSync(storeName);
+  const subWindow = new BrowserWindow({
+    width: 1024,
+    height: 728,
+    parent: mainWindow,
+    webPreferences: {
+      preload: path.join(__dirname, 'sync/kindle.js'),
+    },
+  });
+  subWindow.loadURL('https://read.amazon.co.jp/kindle-library');
+});
+
+ipcMain.handle('setBookList', async (event, bookList) => {
+  console.log('setBookList');
+  store.set('bookList_kindle', bookList);
+});
+
+ipcMain.handle('getBookList', async (event) => {
+  const bookList = await store.get('bookList_kindle', []);
+  console.log(bookList);
+  return bookList;
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -101,7 +129,7 @@ const createWindow = async () => {
   });
 
   mainWindow.on('closed', () => {
-    mainWindow = null;
+    mainWindow = undefined;
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
